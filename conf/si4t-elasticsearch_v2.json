@@ -1,0 +1,86 @@
+{
+    "mappings": {"si4t-content-default": {
+        "dynamic_date_formats": ["date_time_no_millis"],
+        "_all": {"enabled": false},
+        "_source": {"enabled": true},
+        "properties": {
+            "itemType": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+			"parentsgid": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": false
+                }}
+            },
+			"publicationId": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+			"schemaid": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+			"sgid": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": false
+                }}
+            },
+			"title": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+			"type": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": false
+                }}
+            },
+			"url": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+			"doctype": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "type": "keyword",
+                    "index": true,
+					"store": true
+                }}
+            },
+            "body": {
+                "type": "text",
+                "index": true,
+                "store": true
+            }
+        }
+    }}
+}
