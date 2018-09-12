@@ -39,6 +39,10 @@ public class ElasticSearchIndexer implements SearchIndex {
 
 	private String documentEndpoint;
 
+	private String user;
+
+	private String password;
+
 	private String indexName;
 
 	private String indexType;
@@ -62,6 +66,14 @@ public class ElasticSearchIndexer implements SearchIndex {
 		String documentEndpoint = indexerConfiguration.getAttribute("documentEndpoint");
 		log.info("Setting Document Endpoint to: " + documentEndpoint);
 		this.documentEndpoint = documentEndpoint;
+
+		String user = indexerConfiguration.getAttribute("user");
+		log.info("Setting user to: " + user);
+		this.user = user;
+
+		String password = indexerConfiguration.getAttribute("password");
+		log.info("Setting Password to: " + password);
+		this.password = password;
 
 		String indexName = indexerConfiguration.getAttribute("indexName");
 		log.info("Setting Index Name to: " + indexName);
@@ -172,7 +184,7 @@ public class ElasticSearchIndexer implements SearchIndex {
 						ElasticSearchIndexDispatcher.INSTANCE.
 								addBinaries(binaryAdds,
 										new ElasticSearchClientRequest(
-												this.documentEndpoint, this.indexName, this.indexType)
+												this.documentEndpoint, this.user, this.password, this.indexName, this.indexType)
 								)
 					);
 		}
@@ -270,7 +282,7 @@ public class ElasticSearchIndexer implements SearchIndex {
 						(
 								DispatcherAction.PERSIST,
 								new ElasticSearchClientRequest(
-										this.documentEndpoint, this.indexName, this.indexType
+										this.documentEndpoint, this.user, this.password, this.indexName, this.indexType
 								),
 								documentBatch
 						);
@@ -296,7 +308,7 @@ public class ElasticSearchIndexer implements SearchIndex {
 						(
 								DispatcherAction.PERSIST,
 								new ElasticSearchClientRequest(
-										this.documentEndpoint, this.indexName, this.indexType
+										this.documentEndpoint, this.user, this.password, this.indexName, this.indexType
 								),
 								documentBatch
 						);

@@ -44,7 +44,7 @@
 			<Storage Type="filesystem" 
 					Class="com.tridion.storage.si4t.FSSearchDAOFactory" 
 					Id="defaultFile" defaultFilesystem="false" defaultStorage="false">
-				<Indexer Class="org.si4t.elastic.ElasticSearchIndexer" DocExtensions="txt" documentEndpoint="http://localhost:9200/" indexName="tridion" indexType="website"/>
+				<Indexer Class="org.si4t.elastic.ElasticSearchIndexer" DocExtensions="txt" documentEndpoint="http://localhost:9200/" user="" password="" indexName="tridion" indexType="website"/>
 			</Storage>
         </Storages>
     </Global>

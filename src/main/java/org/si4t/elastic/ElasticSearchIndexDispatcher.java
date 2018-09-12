@@ -7,6 +7,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -14,6 +15,11 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpHost;
@@ -46,17 +52,34 @@ public enum ElasticSearchIndexDispatcher
 		if (_httpClients.get(clientRequest.getEndpointUrl()) == null)
 		{
 			log.info("Obtaining Elastic Search Client [" + clientRequest.getEndpointUrl() + ": " + clientRequest.getEndpointUrl());
-				this.createElasticSearchRestClient(clientRequest.getEndpointUrl());
+				this.createElasticSearchRestClient(clientRequest.getEndpointUrl(),clientRequest.getUserName(),clientRequest.getPassword());
 		}
 		return _httpClients.get(clientRequest.getEndpointUrl());
 	}
 
-	private void createElasticSearchRestClient(String endpointUrl)
+	private void createElasticSearchRestClient(String endpointUrl, String user, String password)
 	{
 		RestHighLevelClient restClient = null;
 		try {
 			URL url = new URL(endpointUrl);
-			restClient = new RestHighLevelClient(RestClient.builder(new HttpHost(url.getHost(),url.getPort(),url.getProtocol())));
+
+			RestClientBuilder builder = RestClient.builder(new HttpHost(url.getHost(), url.getPort(),url.getProtocol()))
+					.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+						@Override
+						public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+							if (!Utils.StringIsNullOrEmpty(user) && !Utils.StringIsNullOrEmpty(password)) {
+								CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+								credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user, password));
+								return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+							}
+							else {
+								return httpClientBuilder;
+							}
+						}
+					});
+
+			restClient = new RestHighLevelClient(builder);
+
 		} catch (Exception e) {
 			throw new ElasticsearchException("Could not create RestService instance",e);
 		}
