@@ -2,116 +2,116 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-<groupId>org.si4t</groupId>
-<artifactId>si4t-elastic</artifactId>
-<version>1.0</version>
-<properties>
-    <elastic.version>6.2.2</elastic.version>
-    <si4t.version>1.2</si4t.version>
-    <gson.version>2.2.2</gson.version>
-    <tridion.version>8.5.0</tridion.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-</properties>
-<packaging>jar</packaging>
-<build>
-    <plugins>
-         <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <version>2.5.1</version>
-              <inherited>true</inherited>
-              <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-              </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-                <!-- Do note the exclusions. These should come with the Tridion Deployer-->
-                <!-- TODO: check whether we need all of the Elastic jars. If not - exclude! -->
-                <execution>
-                    <id>install</id>
-                    <phase>install</phase>
-                    <goals>
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <outputDirectory>${project.basedir}/lib</outputDirectory>
-                        <excludeGroupIds>com.tridion,org.slf4j,org.apache,commons-io,commons-codec,commons-logging</excludeGroupIds>
-                    </configuration>
-                </execution>
-                <execution>
-                    <id>package</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <outputDirectory>${project.basedir}/lib</outputDirectory>
-                        <excludeGroupIds>com.tridion,org.slf4j,org.apache,commons-io,commons-codec,commons-logging</excludeGroupIds>
-                    </configuration>
-                </execution>
-                <execution>
-                    <id>compile</id>
-                    <phase>compile</phase>
-                    <goals>
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <outputDirectory>${project.basedir}/lib</outputDirectory>
-                        <excludeGroupIds>com.tridion,org.slf4j,commons-io,commons-codec,commons-logging</excludeGroupIds>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
-<dependencies>
-    <dependency>
-        <groupId>org.si4t</groupId>
-        <artifactId>si4t-se</artifactId>
-        <version>${si4t.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.elasticsearch</groupId>
-        <artifactId>elasticsearch</artifactId>
-        <version>${elastic.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.elasticsearch.client</groupId>
-        <artifactId>elasticsearch-rest-high-level-client</artifactId>
-        <version>${elastic.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.7.12</version>
-    </dependency>
-    <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.4</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.4</version>
-    </dependency>
-    <dependency>
-        <groupId>com.tridion</groupId>
-        <artifactId>cd_model</artifactId>
-        <version>${tridion.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>com.tridion</groupId>
-        <artifactId>cd_core</artifactId>
-        <version>${tridion.version}</version>
-    </dependency>
-    <!-- Web 8 new -->
+    <groupId>org.si4t</groupId>
+    <artifactId>si4t-elastic</artifactId>
+    <version>1.1</version>
+    <properties>
+        <elastic.version>6.2.2</elastic.version>
+        <si4t.version>1.2</si4t.version>
+        <gson.version>2.2.2</gson.version>
+        <tridion.version>11.0.0</tridion.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!-- Do note the exclusions. These should come with the Tridion Deployer-->
+                    <!-- TODO: check whether we need all of the Elastic jars. If not - exclude! -->
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lib</outputDirectory>
+                            <excludeGroupIds>com.tridion,org.slf4j,org.apache,commons-io,commons-codec,commons-logging</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lib</outputDirectory>
+                            <excludeGroupIds>com.tridion,org.slf4j,org.apache,commons-io,commons-codec,commons-logging</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lib</outputDirectory>
+                            <excludeGroupIds>com.tridion,org.slf4j,commons-io,commons-codec,commons-logging</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.si4t</groupId>
+            <artifactId>si4t-se</artifactId>
+            <version>${si4t.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elastic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elastic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tridion</groupId>
+            <artifactId>udp_model</artifactId>
+            <version>${tridion.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tridion</groupId>
+            <artifactId>udp_core</artifactId>
+            <version>${tridion.version}</version>
+        </dependency>
+        <!-- Web 8 new -->
 
     <dependency>
         <groupId>com.tridion</groupId>

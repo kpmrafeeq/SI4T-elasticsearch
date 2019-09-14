@@ -34,7 +34,7 @@
 						as well as which binaries to index, the default URL to post documents to as well as
 						pointing the indexer to specific cores for specific Publications.
 				-->
-				<Indexer Class="org.si4t.elastic.ElasticSearchIndexer" DocExtensions="txt" documentEndpoint="http://localhost:9200/" indexName="tridion" indexType="website"/>
+				<Indexer Class="org.si4t.elastic.ElasticSearchIndexer" DocExtensions="txt" documentEndpoint="http://localhost:9200/" user="" password="" indexName="tridion" indexType="website"/>
 			</Storage>
 			
 			<!-- SI4T:

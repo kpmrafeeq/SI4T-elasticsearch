@@ -55,10 +55,10 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" name="Maven: com.tridion:cd_model:8.5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.tridion:cd_core:8.5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.tridion:cd_common_util:8.5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.tridion:cd_common_config_legacy:8.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.tridion:udp_model:11.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.tridion:udp_core:11.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.tridion:udp_common_util:11.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.tridion:udp_common_config_legacy:11.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.11.0" level="project" />
