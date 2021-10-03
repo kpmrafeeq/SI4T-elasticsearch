@@ -141,10 +141,14 @@ public class ElasticSearchIndexer implements SearchIndex {
 	{
 		try
 		{
+			log.info("commitAddContentToElasticSearch!!");
 			this.commitAddContentToElasticSearch(this.itemAdds);
+			log.info("removeItemsFromElasticSearch!!");
 			//this.commitAddBinariesToElasticSearch();
 			this.removeItemsFromElasticSearch(this.itemRemovals);
+			log.info("processItemUpdates!!");
 			this.processItemUpdates();
+			log.info("processItemUpdates completed!!");
 		}
 		catch (IOException e)
 		{
@@ -166,9 +170,20 @@ public class ElasticSearchIndexer implements SearchIndex {
 			logException(e);
 			throw new IndexingException("Elastic Search Client Exception:" + e.getMessage());
 		}
+		catch (Exception e)
+		{
+			logException(e);
+			throw new IndexingException("Elastic Search Client Exception:" + e.getMessage());
+		}
+		catch (Throwable e1)
+		{
+			log.info("eeeeeeeeeeeeeeeeee...!!");
+			e1.printStackTrace();
+			throw new IndexingException("Elastic Search Client Exception:" + e1.getMessage());
+		}
 		finally
 		{
-			log.info("Clearing out registers.");
+			log.info("Clearing out registers....!!");
 			this.clearRegisters();
 		}
 	}
@@ -278,6 +293,12 @@ public class ElasticSearchIndexer implements SearchIndex {
 			int batchSize = documentBatch.getItems().size();
 			if (batchSize > 0)
 			{
+				log.info("documentEndpoint - " +this.documentEndpoint);
+				log.info("user - " +this.user);
+				log.info("password - " +this.password);
+				log.info("indexName - " +this.indexName);
+				log.info("indexType - " +this.indexType);
+				
 				DispatcherPackage dispatcherPackage = new DispatcherPackage
 						(
 								DispatcherAction.PERSIST,
@@ -286,6 +307,7 @@ public class ElasticSearchIndexer implements SearchIndex {
 								),
 								documentBatch
 						);
+				log.info("ElasticSearchIndexDispatcher");
 				String status = ElasticSearchIndexDispatcher.INSTANCE.addDocuments(dispatcherPackage);
 
 				log.info("Adding " + batchSize + " documents of batch " + batchIndex + " had the following response: " + status);

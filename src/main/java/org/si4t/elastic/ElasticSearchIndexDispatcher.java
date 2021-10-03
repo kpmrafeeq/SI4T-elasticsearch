@@ -6,6 +6,7 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -89,6 +90,7 @@ public enum ElasticSearchIndexDispatcher
 
 	public String addDocuments(DispatcherPackage dispatcherPackage) throws ParserConfigurationException, IOException, SAXException, ElasticsearchException
 	{
+		try {
 		ElasticSearchClientRequest clientRequest = dispatcherPackage.getClientRequest();
 		RestHighLevelClient client = this.getElasticSearchRestClient(clientRequest);
 		if (client == null)
@@ -109,15 +111,25 @@ public enum ElasticSearchIndexDispatcher
 		for (DocumentData documentData : documents)
 		{
 			log.info("Adding " + documentData.getId() + " document to the elastic search Indexer");
-
-			request.add(new IndexRequest(clientRequest.getIndexName(), clientRequest.getIndexType(), documentData.getId())
+			
+			request.add(new IndexRequest(clientRequest.getIndexName())
+					.id(documentData.getId())
 					.source(new Gson().toJson(documentData.getFields()),XContentType.JSON));
-		}
 
-		BulkResponse bulkResponse = client.bulk(request);
+		}
+		
+		log.info("BulkResponse" +request.toString() );
+
+		BulkResponse bulkResponse = client.bulk(request,RequestOptions.DEFAULT);
 		RestStatus status = bulkResponse.status();
 
 		return ("Adding " + documents.size() + " document(s) had the following response: " + status.name());
+		}
+		catch (Exception e)
+		{
+			logException(e);
+		}
+		return "Error";
 	}
 
 	public String addBinaries(Map<String, BinaryIndexData> binaryAdds, ElasticSearchClientRequest clientRequest) throws IOException, ParserConfigurationException, SAXException
@@ -128,35 +140,45 @@ public enum ElasticSearchIndexDispatcher
 
 	public String removeFromElasticSearch(DispatcherPackage dispatcherPackage) throws ParserConfigurationException, IOException, SAXException
 	{
-		ElasticSearchClientRequest clientRequest = dispatcherPackage.getClientRequest();
-		RestHighLevelClient client = this.getElasticSearchRestClient(clientRequest);
-		if (client == null)
+		try
 		{
-			throw new ElasticsearchException("Elastic Client not Instantiated");
+			ElasticSearchClientRequest clientRequest = dispatcherPackage.getClientRequest();
+			RestHighLevelClient client = this.getElasticSearchRestClient(clientRequest);
+			if (client == null)
+			{
+				throw new ElasticsearchException("Elastic Client not Instantiated");
+			}
+	
+			DocumentBatch documentBatch = dispatcherPackage.getDocumentBatch();
+			if (documentBatch == null)
+			{
+				throw new NullPointerException("Document batch is null");
+			}
+	
+			BulkRequest request = new BulkRequest();
+	
+			ArrayList<DocumentData> documents = documentBatch.getItems();
+	
+			for (DocumentData documentData : documents)
+			{
+				log.info("Removing " + documentData.getId() + " document from the elastic search Indexer");
+	
+				request.add(new DeleteRequest(clientRequest.getIndexName(),documentData.getId()));
+						
+				//request.add(new DeleteRequest(clientRequest.getIndexName()), clientRequest.getIndexType(), documentData.getId()));
+			}
+	
+			BulkResponse bulkResponse = client.bulk(request,RequestOptions.DEFAULT);
+	
+			RestStatus status = bulkResponse.status();
+	
+			return ("Deleting " + documents.size() + " document(s) had the following response: " + status.name());
 		}
-
-		DocumentBatch documentBatch = dispatcherPackage.getDocumentBatch();
-		if (documentBatch == null)
+		catch (Exception e)
 		{
-			throw new NullPointerException("Document batch is null");
+			logException(e);
 		}
-
-		BulkRequest request = new BulkRequest();
-
-		ArrayList<DocumentData> documents = documentBatch.getItems();
-
-		for (DocumentData documentData : documents)
-		{
-			log.info("Removing " + documentData.getId() + " document from the elastic search Indexer");
-
-			request.add(new DeleteRequest(clientRequest.getIndexName(), clientRequest.getIndexType(), documentData.getId()));
-		}
-
-		BulkResponse bulkResponse = client.bulk(request);
-
-		RestStatus status = bulkResponse.status();
-
-		return ("Deleting " + documents.size() + " document(s) had the following response: " + status.name());
+		return "Error";
 	}
 
 
